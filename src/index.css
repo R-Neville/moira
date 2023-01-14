@@ -1,0 +1,19 @@
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'Didact Gothic', sans-serif;
+  src: url(./assets/fonts/DidactGothic-Regular.ttf);
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Didact Gothic', sans-serif;
+}
