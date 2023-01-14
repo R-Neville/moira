@@ -1,6 +1,8 @@
 export default interface Colors {
   bgPrimary: string;
   fgPrimary: string;
+  bgSecondary: string;
+  fgSecondary: string;
   bgAccent: string;
   fgAccent: string;
   bgHighlight: string;
