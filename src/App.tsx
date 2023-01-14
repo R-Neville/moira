@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/header/Header";
 import Menu from "./components/menu/Menu";
 import ThemeProvider from "./context-providers/ThemeProvider";
+import HomePage from "./components/home-page/HomePage";
 
 function App() {
   const [menuActive, setMenuActive] = useState(false);
@@ -36,12 +37,19 @@ function App() {
             flexDirection: "column",
             padding: "0",
             width: "100%",
-            height: "100%",
+            minHeight: "100vh",
             margin: "0",
           }}
         >
           <Header />
           {menuActive && <Menu />}
+          <main
+            style={{ flexGrow: "1", display: "flex", flexDirection: "column" }}
+          >
+            <Routes>
+              <Route index path="/" element={<HomePage />} />
+            </Routes>
+          </main>
         </div>
       </BrowserRouter>
     </ThemeProvider>
