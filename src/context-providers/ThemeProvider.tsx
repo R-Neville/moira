@@ -20,7 +20,7 @@ export const ThemeContext = createContext<IThemeProvider>({} as IThemeProvider);
 export const useThemeContext = () => useContext(ThemeContext);
 
 export default function ThemeProvider(props: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeType>("light");
+  const [currentTheme, setCurrentTheme] = useState<ThemeType>("dark");
 
   return (
     <ThemeContext.Provider
