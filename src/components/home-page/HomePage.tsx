@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useThemeContext } from "../../context-providers/ThemeProvider";
 import Paragraph from "../shared/Paragraph";
 import Section from "../shared/Section";
+import RouterLink from "../shared/RouterLink";
 
 export default function HomePage() {
   const { colors } = useThemeContext();
@@ -21,9 +22,26 @@ export default function HomePage() {
     <div style={styles()}>
       <Section heading="Keep on top of it all">
         <Paragraph color={colors.fgSecondary}>
-          Moira is a task tracking application that can be used to help keep on
-          top of pretty much any type of project.
+          Moira is a task tracking application that can be used to help organise
+          pretty much any type of undertaking that is divisible into a set of
+          sub-tasks.
         </Paragraph>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <RouterLink
+            to="/register"
+            backgroundColor={colors.bgAccent}
+            color={colors.fgAccent}
+          >
+            Register
+          </RouterLink>
+          <RouterLink
+            to="/login"
+            backgroundColor={colors.bgAccent}
+            color={colors.fgAccent}
+          >
+            Login
+          </RouterLink>
+        </div>
       </Section>
     </div>
   );

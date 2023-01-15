@@ -4,6 +4,8 @@ import Header from "./components/header/Header";
 import Menu from "./components/menu/Menu";
 import ThemeProvider from "./context-providers/ThemeProvider";
 import HomePage from "./components/home-page/HomePage";
+import LoginPage from "./components/login-page/LoginPage";
+import RegisterPage from "./components/register-page/RegisterPage";
 
 function App() {
   const [menuActive, setMenuActive] = useState(false);
@@ -48,6 +50,8 @@ function App() {
           >
             <Routes>
               <Route index path="/" element={<HomePage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
             </Routes>
           </main>
         </div>

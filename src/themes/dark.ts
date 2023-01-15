@@ -12,6 +12,8 @@ const dark = {
     fgAccent: "#ecf0f1",
     bgHighlight: "#abebc6",
     fgHighlight: "#186a3b",
+    bgError: "#f5b7b1",
+    fgError: "#a93226",
   } as Colors,
 } as Theme;
 
