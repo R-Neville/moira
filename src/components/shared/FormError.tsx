@@ -19,6 +19,7 @@ export default function FormError(props: FormErrorProps) {
       borderRadius: "3px",
       marginBottom: "1em",
       backgroundColor: colors.bgError,
+      textAlign: "center",
       color: colors.fgError,
     } as React.CSSProperties;
   }, [colors])
