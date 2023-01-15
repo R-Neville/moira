@@ -4,6 +4,7 @@ import { useThemeContext } from "../../context-providers/ThemeProvider";
 import { FieldState } from "../../shared-interfaces/FieldState";
 import FormActions, { FormAction } from "../shared/FormActions";
 import FieldSet from "../shared/FieldSet";
+import FormError from "../shared/FormError";
 import FormInput from "../shared/FormInput";
 import Section from "../shared/Section";
 import Paragraph from "../shared/Paragraph";
@@ -11,6 +12,7 @@ import Paragraph from "../shared/Paragraph";
 type InputName = "username" | "password" | "password_confirmation";
 
 export interface RegisterFormState {
+  error: string;
   username: FieldState;
   password: FieldState;
   password_confirmation: FieldState;
@@ -19,6 +21,7 @@ export interface RegisterFormState {
 export default function RegisterPage() {
   const { colors } = useThemeContext();
   const [formState, setFormState] = useState<RegisterFormState>({
+    error: "",
     username: {
       value: "",
       valid: true,
@@ -52,17 +55,42 @@ export default function RegisterPage() {
         ...formState,
         [inputElement.name]: { ...[inputElement.name], valid: false },
       });
-      return;
     }
 
     setFormState({
       ...formState,
+      error: "",
       [inputElement.name]: { value: inputElement.value, valid: true },
     });
   };
 
   const onSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const inputs = Array.from(form.querySelectorAll("input"));
+
+    for (let input of inputs) {
+      if (input.value.length === 0) {
+        setFormState({
+          ...formState,
+          error: "One or more required fields are empty.",
+          [input.name]: { ...[input.name], valid: false },
+        });
+        return;
+      }
+    }
+
+    const passwordInputs = inputs.filter((input) => {
+      return input.name.includes("password");
+    });
+
+    const passwordSet = new Set(...passwordInputs.map((input) => input.value));
+
+    if (passwordSet.size > 1) {
+      setFormState({...formState, error: "Passwords don't match."});
+      return;
+    }
   };
 
   const actions = [
@@ -71,6 +99,7 @@ export default function RegisterPage() {
       type: "reset",
       onClick: () => {
         setFormState({
+          error: "",
           username: { value: "", valid: true },
           password: { value: "", valid: true },
           password_confirmation: { value: "", valid: true },
@@ -87,6 +116,7 @@ export default function RegisterPage() {
     <div style={styles()}>
       <Section heading="Register">
         <form onSubmit={onSubmit}>
+          {formState.error && <FormError message={formState.error} />}
           <FieldSet
             labelText="Username"
             color={colors.fgAccent}
@@ -104,6 +134,7 @@ export default function RegisterPage() {
               }
               onChange={onChange}
               value={formState.username.value}
+              placeholder={formState.username.valid ? "" : "Required"}
             />
           </FieldSet>
           <FieldSet
@@ -123,6 +154,7 @@ export default function RegisterPage() {
               }
               onChange={onChange}
               value={formState.password.value}
+              placeholder={formState.password.valid ? "" : "Required"}
             />
           </FieldSet>
           <FieldSet
@@ -135,13 +167,20 @@ export default function RegisterPage() {
               type="password"
               name="password_confirmation"
               backgroundColor={
-                formState.password_confirmation.valid ? colors.fgAccent : colors.bgError
+                formState.password_confirmation.valid
+                  ? colors.fgAccent
+                  : colors.bgError
               }
               color={
-                formState.password_confirmation.valid ? colors.bgAccent : colors.fgError
+                formState.password_confirmation.valid
+                  ? colors.bgAccent
+                  : colors.fgError
               }
               onChange={onChange}
               value={formState.password_confirmation.value}
+              placeholder={
+                formState.password_confirmation.valid ? "" : "Required"
+              }
             />
           </FieldSet>
           <FormActions

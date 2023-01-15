@@ -14,6 +14,7 @@ export default function FieldSet(props: FieldSetProps) {
         padding: "1em",
         border: "none",
         borderRadius: "3px",
+        margin: "0",
         marginBottom: "1em",
         backgroundColor: props.backgroundColor,
       }}

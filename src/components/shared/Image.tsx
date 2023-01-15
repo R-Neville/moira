@@ -11,7 +11,7 @@ export default function Image(props: ImageProps) {
       src={props.src}
       alt={props.alt}
       width={props.width}
-      height={props.height || props.width}
+      height={props.height}
     ></img>
   );
 }

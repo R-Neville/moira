@@ -7,10 +7,12 @@ import FieldSet from "../shared/FieldSet";
 import FormInput from "../shared/FormInput";
 import Section from "../shared/Section";
 import Paragraph from "../shared/Paragraph";
+import FormError from "../shared/FormError";
 
 type InputName = "username" | "password";
 
 export interface LoginFormState {
+  error: string;
   username: FieldState;
   password: FieldState;
 }
@@ -18,6 +20,7 @@ export interface LoginFormState {
 export default function LoginPage() {
   const { colors } = useThemeContext();
   const [formState, setFormState] = useState<LoginFormState>({
+    error: "",
     username: {
       value: "",
       valid: true,
@@ -43,6 +46,7 @@ export default function LoginPage() {
     const inputElement = event.target as HTMLInputElement;
 
     if (inputElement.value.length === 0) {
+      inputElement.placeholder = "Required";
       setFormState({
         ...formState,
         [inputElement.name]: { ...[inputElement.name], valid: false },
@@ -58,6 +62,20 @@ export default function LoginPage() {
 
   const onSubmit = (event: React.SyntheticEvent) => {
     event.preventDefault();
+
+    const form = event.target as HTMLFormElement;
+    const inputs = Array.from(form.querySelectorAll("input"));
+
+    for (let input of inputs) {
+      if (input.value.length === 0) {
+        setFormState({
+          ...formState,
+          error: "One or more required fields are empty.",
+          [input.name]: { ...[input.name], valid: false },
+        });
+        return;
+      }
+    }
   };
 
   const actions = [
@@ -66,6 +84,7 @@ export default function LoginPage() {
       type: "reset",
       onClick: () => {
         setFormState({
+          error: "",
           username: { value: "", valid: true },
           password: { value: "", valid: true },
         });
@@ -80,7 +99,8 @@ export default function LoginPage() {
   return (
     <div style={styles()}>
       <Section heading="Login">
-        <form onSubmit={onSubmit}>
+        <form className="login-form" onSubmit={onSubmit}>
+          {formState.error && <FormError message={formState.error} />}
           <FieldSet
             labelText="Username"
             color={colors.fgAccent}
@@ -98,6 +118,7 @@ export default function LoginPage() {
               }
               onChange={onChange}
               value={formState.username.value}
+              placeholder={formState.username.valid ? "" : "Required"}
             />
           </FieldSet>
           <FieldSet
@@ -117,6 +138,7 @@ export default function LoginPage() {
               }
               onChange={onChange}
               value={formState.password.value}
+              placeholder={formState.password.valid ? "" : "Required"}
             />
           </FieldSet>
           <FormActions
