@@ -1,9 +1,11 @@
 import { useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { useThemeContext } from "../../context-providers/ThemeProvider";
 import MenuLink from "./MenuLink";
 
 export default function Menu() {
   const { colors } = useThemeContext();
+  const location = useLocation();
 
   const styles = useCallback(() => {
     return {
@@ -23,9 +25,9 @@ export default function Menu() {
           alignItems: "center",
         }}
       >
-        {window.location.href !== "/" && <MenuLink to="/">Home</MenuLink>}
-        <MenuLink to="/about">About</MenuLink>
-        <MenuLink to="/faqs">FAQs</MenuLink>
+        {location.pathname !== "/" && <MenuLink to="/">Home</MenuLink>}
+        {location.pathname !== "/about" && <MenuLink to="/about">About</MenuLink>}
+        {location.pathname !== "/faqs" && <MenuLink to="/faqs">FAQs</MenuLink>}
       </nav>
     </div>
   );
